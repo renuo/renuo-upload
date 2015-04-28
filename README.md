@@ -11,12 +11,17 @@ Contains a top of dropzone JS-library for a multiple CORS upload.
 ```sh
 bower install https://git.renuo.ch/renuo/renuo-upload.git
 ```
+
 ### Using
+
+#### Complete Example
+
+Look into the example folder. You will find a well documented example.
 
 #### Initialzing
 
 * apikey is a string
-* element is a htmlelement or a string containg a id to a htmlelement
+* element is a htmlelement
 * [dropzoneOptions](http://www.dropzonejs.com/#configuration-options) passed to dropzone
 * callback when a file is uploaded successful (optional, it has a default one)
 
