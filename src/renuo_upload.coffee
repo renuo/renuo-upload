@@ -26,7 +26,7 @@ class RenuoUpload
     name.replace(/\.[^/.]+$/, "")
 
   _getPublicUrl: (name) ->
-    "https://renuo-upload-develop.renuoapp.ch/#{@publicUrlPath}#{name}"
+    "#{@cdnPath}#{name}"
 
   _getCredentials: ->
     deferred = $.Deferred()
@@ -79,7 +79,8 @@ class RenuoUpload
 
   _checkElement: ->
     throw new Error 'Element is not defined' unless @element?
-    throw new Error 'Element is not a string' unless typeof @element is 'string'
+    @element = @element[0] if @element[0].nodeType?
+    throw new Error 'Element is not a valid element' unless @element.nodeType?
 
   _adaptOptions: ->
     throw new Error 'DropzoneOptions is not defined' unless @dropzoneOptions?
