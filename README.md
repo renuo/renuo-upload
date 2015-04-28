@@ -54,7 +54,7 @@ possible attributes:
 [Take a look at the wiki.](https://redmine.renuo.ch/projects/upload/wiki)
 
 
-##Developing
+## Developing
 
 
 ### Setup
