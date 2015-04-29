@@ -1,7 +1,8 @@
 class RenuoUpload
 
-  constructor: (@apikey, @element, @dropzoneOptions, @callback) ->
+  constructor: (@element, @dropzoneOptions, @callback) ->
     @_checkRequirements()
+    @_initializeOptions()
     @_checkAdaptParams()
     jQuery.when(@_getUploadInfoAndSignature()).done(@_initializeDropzone)
 
@@ -18,6 +19,11 @@ class RenuoUpload
     uploadDropzone.on 'error', ->
       #todo inform sentry/new relic
 
+  _initializeOptions: =>
+    @apiKey = jQuery(@element).data('apikey')
+    @signingUrl = jQuery(@element).data('signingurl')
+
+
   _cleanFilename: (originalName) ->
     originalName.toLowerCase().replace(/[ _]/g, '-').replace(/[^\w-.]/g, '')
 
@@ -28,23 +34,27 @@ class RenuoUpload
     cleanName.replace(/\.[^/.]+$/, "")
 
   _getPublicUrl: (cleanName) ->
-    "#{@cdnPath}#{cleanName}"
+    "#{@fileUrlPath}#{cleanName}"
+
+  _getFilePath: (cleanName) ->
+    "#{@filePrefix}#{cleanName}"
 
   _getUploadInfoAndSignature: ->
-    jQuery.ajax({
+    jQuery.ajax(
       type: 'POST'
-      url: 'domain/generate_policy' #todo define domain
+      url: @signingUrl
       data:
-        api_key: @apikey
+        api_key: @apiKey
       dataType: 'json'
-    })
+    )
     .done( (responseJson) =>
       @dropzoneOptions.url = responseJson.url
       @dropzoneOptions.params = {}
       jQuery.each(responseJson.data, (k, v) =>
         @dropzoneOptions.params[k.replace(/_/g, '-')] = v
       )
-      @cdnPath = '' #TODO take from response
+      @filePrefix = responseJson.file_prefix
+      @fileUrlPath = responseJson.file_url_path
     )
     .fail( ->
       throw new Error 'Failed to get credential for upload.'
@@ -59,6 +69,7 @@ class RenuoUpload
       extension: @_getExtension(file.name)
       size: file.size
       publicUrl: @_getPublicUrl(cleanFilename)
+      filePath: @_getFilePath(cleanFilename)
     }
 
   _checkAdaptParams: ->
