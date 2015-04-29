@@ -16,7 +16,44 @@ bower install https://git.renuo.ch/renuo/renuo-upload.git
 
 #### Complete Example
 
-Look into the example folder. You will find a well documented example.
+The example is located in the example 
+
+```html
+<!doctype html>
+<html lang="en">
+<body>
+  <!-- create a html element on which you wan't the upload, id or class dosen't matter -->
+  <div id='example'></div>
+  <!-- include all dependencies -->
+  <script src='../bower_components/dropzone/dist/dropzone.js'></script>
+  <script src='../bower_components/jquery/dist/jquery.js'></script>
+  <!-- include renuo-upload -->
+  <script src='../dist/renuo_upload.min.js'></script>
+  <script>
+    (function() {
+      //example custom callback
+      var logResult = function (result) {
+        console.log(result);
+        console.log("filename orginal: " + result.orginalName);
+        console.log("filename clean: " + result.cleanName);
+        console.log("filename clean & short: " + result.name);
+        console.log("filename extension: " + result.extension);
+        console.log("filename size: " + result.size);
+        console.log("public url: " + result.publicUrl);
+      };
+      // get your created element
+      var element = $('#example'); //or document.querySelector('#example')
+      //all possible options for dropzone
+      var dropzoneOptions = {
+        acceptedFiles: 'image/*,application/pdf,.psd' //always needed, some possible extensions
+      };
+      //that is it! so simple.
+      new RenuoUpload('apikeyexample', element, dropzoneOptions, logResult);
+    }).call(this);
+  </script>
+</body>
+</html>
+```
 
 #### Initialzing
 
@@ -65,7 +102,7 @@ possible attributes:
 ### Setup
 
 ```sh
-git clone
+git clone git@git.renuo.ch:renuo/renuo-upload.git
 npm install
 ```
 

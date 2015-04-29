@@ -21,10 +21,10 @@
         console.log("public url: " + result.publicUrl);
       };
       // get your created element
-      var element = $('#example')//or document.querySelector('#example')
+      var element = $('#example'); //or document.querySelector('#example')
       //all possible options for dropzone
       var dropzoneOptions = {
-        acceptedFiles: 'image/*' //always needed
+        acceptedFiles: 'image/*,application/pdf,.psd' //always needed, some possible extensions
       };
       //that is it! so simple.
       new RenuoUpload('apikeyexample', element, dropzoneOptions, logResult);
