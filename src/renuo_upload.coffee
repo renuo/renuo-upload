@@ -3,12 +3,12 @@ class RenuoUpload
   constructor: (@apikey, @element, @dropzoneOptions, @callback) ->
     @_checkRequirements()
     @_checkAdaptParams()
-    $.when(@_getCredentials()).done(@_initializeDropzone)
+    jQuery.when(@_getUploadInfoAndSignature()).done(@_initializeDropzone)
 
   _initializeDropzone: =>
     Dropzone.autoDiscover = false
 
-    $(@element).addClass('dropzone')
+    jQuery(@element).addClass('dropzone')
 
     uploadDropzone = new Dropzone(@element, @dropzoneOptions)
 
@@ -30,8 +30,8 @@ class RenuoUpload
   _getPublicUrl: (cleanName) ->
     "#{@cdnPath}#{cleanName}"
 
-  _getCredentials: ->
-    $.ajax({
+  _getUploadInfoAndSignature: ->
+    jQuery.ajax({
       type: 'POST'
       url: 'domain/generate_policy' #todo define domain
       data:
@@ -41,7 +41,7 @@ class RenuoUpload
     .done( (responseJson) =>
       @dropzoneOptions.url = responseJson.url
       @dropzoneOptions.params = {}
-      $.each(responseJson.data, (k, v) =>
+      jQuery.each(responseJson.data, (k, v) =>
         @dropzoneOptions.params[k.replace(/_/g, '-')] = v
       )
       @cdnPath = '' #TODO take from response
@@ -86,11 +86,11 @@ class RenuoUpload
     @callback = @_defaultCallback unless typeof @callback is 'function'
 
   _defaultCallback: (result) ->
-    if $(@element).parents('form').length
+    if jQuery(@element).parents('form').length
       name = result.name #TODO discuss with Lukas about upload of two times the same file
       delete result.name #TODO check if necessary, unexpected behavior, good point from Y
-      $.each(result, (k, v) =>
-        $(@element).parents('form').append("<input type='hidden' name='renuoupload[#{name}][#{k}]' value='#{v}'>")
+      jQuery.each(result, (k, v) =>
+        jQuery(@element).parents('form').append("<input type='hidden' name='renuoupload[#{name}][#{k}]' value='#{v}'>")
       )
 
 if module?
