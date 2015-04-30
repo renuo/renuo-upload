@@ -61,33 +61,41 @@ The example is located in the example (can be used for development)
 
 ```ruby
 module RenuoUploadHelper
-  #base_url of the file (saved in the db), looks like g1h7/ae3g/sds2/1n3h/filename
-  #options is a string, all thumbor options possible, look here https://github.com/thumbor/thumbor/wiki/Usage
-  #tag_attrs is a hash which is direct passed to the normal image_tag (all options like class: 'red' are possible)
-  def renuo_upload_image_tag(base_url, options = nil, tag_attrs = {})
-    image_tag("//#{renuo_upload_cdn_host}/#{renuo_upload_image_path(base_url, options)}", tag_attrs)
-  end
-
-  private
-  #returns the image_path
-  def renuo_upload_image_path(base_url, options)
-    #for thumbnail (t/) if options are set
-    return "t/#{options}/u/#{renuo_upload_app_name}/#{base_url}" if options
-
-    #else it returns the original (o/) image path
-    "o/#{renuo_upload_app_name}/#{base_url}"
-  end
-
-  def renuo_upload_cdn_host
-    #cdn host where the files are available, set over env 
-    ENV['RENUO_UPLOAD_CDN_HOST']
-  end
-
-  def renuo_upload_app_name
-    #app name who the app is named (has to match with the name defined with the api_key)
-    ENV['RENUO_UPLOAD_APP_NAME']
-  end
-end
+   #creates a image_tag with the right url for renuo upload images
+   #base_url of the file (saved in the db), looks like g1h7/ae3g/sds2/1n3h/filename
+   #options is a string, all thumbor options possible, look here https://github.com/thumbor/thumbor/wiki/Usage
+   #tag_attrs is a hash which is direct passed to the normal image_tag (all options like class: 'red' are possible)
+   def renuo_upload_image_tag(base_url, options = nil, tag_attrs = {})
+     image_tag(renuo_upload_image_url(base_url, options), tag_attrs)
+   end
+ 
+   #creates the right url for renuo upload images
+   #base_url of the file (saved in the db), looks like g1h7/ae3g/sds2/1n3h/filename
+   #options is a string, all thumbor options possible, look here https://github.com/thumbor/thumbor/wiki/Usage
+   def renuo_upload_image_url(base_url, options = nil)
+     "https://#{renuo_upload_cdn_host}/#{renuo_upload_image_path(base_url, options)}"
+   end
+ 
+   private
+   #returns the image_path
+   def renuo_upload_image_path(base_url, options)
+     #for thumbnail (t/) if options are set
+     return "t/#{options}/u/o/#{renuo_upload_app_name}/#{base_url}" if options
+ 
+     #else it returns the original (o/) image path
+     "o/#{renuo_upload_app_name}/#{base_url}"
+   end
+ 
+   def renuo_upload_cdn_host
+     #cdn host where the files are available, set over env 
+     ENV['RENUO_UPLOAD_CDN_HOST']
+   end
+ 
+   def renuo_upload_app_name
+     #app name who the app is named (has to match with the name defined with the api_key)
+     ENV['RENUO_UPLOAD_APP_NAME']
+   end
+ end
 
 ```
 
