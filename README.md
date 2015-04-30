@@ -100,7 +100,8 @@ end
 * callback when a file is uploaded successful (optional, it has a default one)
 
 ```js
-new RenuoUpload('apikey', element, dropzoneOptions, callback) 
+// dont't forget to set the data attributes for the apikey and siningurl on the element you pass to the upload
+new RenuoUpload(element, dropzoneOptions, callback):
 ```
 
 #### Callback (if success)
