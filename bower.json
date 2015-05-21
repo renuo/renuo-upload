@@ -1,0 +1,21 @@
+{
+  "name": "renuo-upload",
+  "description": "Renuo Upload",
+  "version": "0.0.1",
+  "homepage": "https://redmine.renuo.ch/projects/upload/issues",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "latest",
+    "dropzone": "git://github.com/cyrilkyburz/dropzone"
+  },
+  "devDependencies": {},
+  "authors": [
+    "Cyril Kyburz <cyril.kyburz@renuo.ch> (https://www.renuo.ch)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@git.renuo.ch:renuo/renuo-upload.git"
+  },
+  "appPath": "src"
+}
