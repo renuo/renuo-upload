@@ -163,7 +163,7 @@ possible attributes:
 * [Renuo Upload Signing](https://github.com/renuo/renuo-upload-signing)
 * [Renuo Thumbor Proxy](https://github.com/renuo/renuo-thumbs-proxy)
 * [Renu Thumbor](https://github.com/renuo/renuo-thumbor)
-* [AWS S3 / Cloudfront]()
+* [AWS S3 / Cloudfront](https://aws.amazon.com/)
 
 ## Developing
 
