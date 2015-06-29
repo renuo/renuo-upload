@@ -8,7 +8,6 @@ Yes, but it's stable and already used in production.
 
 * CoffeeScript will be replaced by TypeScript
 * The test coverage will definitely increase (goal is a full tested library)
-* The library will be published on bower
 * Documentation Page will follow
 * An angular example will follow
 
@@ -21,7 +20,7 @@ A modern, open source, scalable upload solution.
 ### Installation
 
 ```sh
-bower install https://github.com/renuo/renuo-upload.git
+bower install renuo-upload --save
 ```
 
 ### Using

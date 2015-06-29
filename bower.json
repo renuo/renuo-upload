@@ -20,7 +20,6 @@
   "authors": [
     "Cyril Kyburz <cyril.kyburz@renuo.ch> (https://www.renuo.ch)"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:renuo/renuo-upload.git"
