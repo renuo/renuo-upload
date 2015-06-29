@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "homepage": "https://redmine.renuo.ch/projects/upload/issues",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "dependencies": {
     "jquery": "latest",
     "dropzone": "git://github.com/cyrilkyburz/dropzone"
