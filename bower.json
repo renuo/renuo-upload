@@ -1,7 +1,7 @@
 {
   "name": "renuo-upload",
   "description": "Renuo Upload",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "https://redmine.renuo.ch/projects/upload/issues",
   "license": "MIT",
   "private": true,
@@ -12,9 +12,15 @@
   "devDependencies": {
     "renuo-upload": "https://github.com/renuo/renuo-upload"
   },
+  "keywords": [
+    "upload",
+    "scalable",
+    "cors"
+  ],
   "authors": [
     "Cyril Kyburz <cyril.kyburz@renuo.ch> (https://www.renuo.ch)"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:renuo/renuo-upload.git"
