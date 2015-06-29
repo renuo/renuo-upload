@@ -5,7 +5,7 @@
   "description": "Renuo Upload",
   "repository": {
     "type": "git",
-    "url": "git@git.renuo.ch:renuo/renuo-upload.git"
+    "url": "git@github.com:renuo/renuo-upload.git"
   },
   "license": "MIT",
   "author": "Cyril Kyburz <cyril.kyburz@renuo.ch> (https://www.renuo.ch)",

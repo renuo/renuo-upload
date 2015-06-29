@@ -9,13 +9,22 @@
     "jquery": "latest",
     "dropzone": "git://github.com/cyrilkyburz/dropzone"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "renuo-upload": "https://github.com/renuo/renuo-upload"
+  },
   "authors": [
     "Cyril Kyburz <cyril.kyburz@renuo.ch> (https://www.renuo.ch)"
   ],
   "repository": {
     "type": "git",
-    "url": "git@git.renuo.ch:renuo/renuo-upload.git"
+    "url": "git@github.com:renuo/renuo-upload.git"
   },
-  "appPath": "src"
+  "appPath": "src",
+  "main": [
+    "dist/renuo_upload.min.js"
+  ],
+  "ignore": [
+    "*",
+    "!dist"
+  ]
 }
