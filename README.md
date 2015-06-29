@@ -1,15 +1,27 @@
-# Renuo Upload
+# Renuo Upload Prototype
+
+## Just a prototype?
+
+Yes, but it's stable and already used in production. 
+
+## What will change in future?
+
+* CoffeeScript will be replaced by TypeScript
+* The test coverage will definitely increase (goal is a full tested library)
+* The library will be published on bower
+* Documentation Page will follow
+* An angular example will follow
 
 ## Summary
 
-Contains a top of dropzone JS-library for a multiple CORS upload.
+A modern, open source, scalable upload solution.
 
 ## How to use?
 
-### Installation 
+### Installation
 
 ```sh
-bower install https://git.renuo.ch/renuo/renuo-upload.git
+bower install https://github.com/renuo/renuo-upload.git
 ```
 
 ### Using
@@ -99,7 +111,6 @@ module RenuoUploadHelper
 
 ```
 
-
 #### Initialzing
 
 * apikey is a string
@@ -116,15 +127,21 @@ new RenuoUpload(element, dropzoneOptions, callback):
 
 ##### Default
 
-It has a default callback which will extend the form, if the element on which dropzone is initialized is in a form else the callback just do nothing. The form gets extended whit hidden inputfield for each file. But all files are nested under renuoupload. A file contains the orginal name, the clean name with extension, the clean name without extension, the extension, the size and the publicUrl of the uploaded file. The params on your server when the form gets submitted could look like that for an image called tiger_ultra_small_0.jpg:
+It has a default callback which will extend the form, if the element on which dropzone is initialized is in a form else 
+the callback just do nothing. The form gets extended whit hidden inputfield for each file. But all files are nested 
+under renuoupload. A file contains the orginal name, the clean name with extension, the clean name without extension, 
+the extension, the size and the publicUrl of the uploaded file. The params on your server when the form gets submitted 
+could look like that for an image called tiger_ultra_small_0.jpg:
 
 ```
-"{renuoupload"=>{"tiger-ultra-small-0"=>{"orginalName"=>"tiger_ultra_small_0.jpg", "cleanName"=>"tiger-ultra-small-0.jpg", "extension"=>"jpg", "size"=>"22931", "publicUrl"=>"https://renuo-upload-develop.renuoapp.ch/undefinedtiger-ultra-small-0.jpg"}}"
+"{renuoupload"=>{"tiger-ultra-small-0"=>{"orginalName"=>"tiger_ultra_small_0.jpg", "cleanName"=>"tiger-ultra-small-0.jpg",
+ "extension"=>"jpg", "size"=>"22931", "publicUrl"=>"https://renuo-upload-develop.renuoapp.ch/undefinedtiger-ultra-small-0.jpg"}}"
 ```
 
 ##### Custom 
  
-You can set a function as callback which will be executed with a result as param. A result contains the same values as if a form would be submitted from the defaultCallback. A result can be used like:
+You can set a function as callback which will be executed with a result as param. A result contains the same values as 
+if a form would be submitted from the defaultCallback. A result can be used like:
 
 result.<attribute>
 
@@ -139,16 +156,23 @@ possible attributes:
 
 ## How does it work?
 
-[Take a look at the wiki.](https://redmine.renuo.ch/projects/upload/wiki)
+[Take a look at the presentation of Renuo Upload.](https://www.renuo.ch/pdfs/15-06-24-renuo-upload.pdf)
 
+### All services
+
+* [Renuo Upload Signing](https://github.com/renuo/renuo-upload-signing)
+* [Renuo Thumbor Proxy](https://github.com/renuo/renuo-thumbs-proxy)
+* [Renu Thumbor](https://github.com/renuo/renuo-thumbor)
+* [AWS S3 / Cloudfront]()
 
 ## Developing
 
-
 ### Setup
 
+You must have node.js and its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
+
 ```sh
-git clone git@git.renuo.ch:renuo/renuo-upload.git
+git clone https://github.com/renuo/renuo-upload.git
 npm install
 ```
 
@@ -167,3 +191,14 @@ gulp release
 ### Tests
 
 Coming soon.
+
+## Problems?
+
+If problems should arise, either contact Cyril Kyburz or Lukas Elmer.
+
+![Cyril Kyburz](http://www.gravatar.com/avatar/4f522497d9145b89661c381d5fd7a50c)
+![Lukas Elmer](https://www.gravatar.com/avatar/697b8e2d3bde4d895eca4fe2dcfe9239)
+
+## MIT License
+
+Coypright 2015 [Renuo GmbH](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
