@@ -52,6 +52,7 @@ The example is located in the example (can be used for development)
         console.log("filename extension: " + result.extension);
         console.log("filename size: " + result.size);
         console.log("public url: " + result.publicUrl);
+        console.log("file path: " + result.filePath);
       };
       // get your created element
       var element = $('#example'); //or document.querySelector('#example')
@@ -152,6 +153,7 @@ possible attributes:
 * extension
 * size
 * publicUrl
+* filePath
 
 ## How does it work?
 
