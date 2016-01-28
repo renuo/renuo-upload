@@ -1,5 +1,7 @@
 # Renuo Upload Prototype
 
+Documentation is here: https://renuo.gitbooks.io/renuo-upload-doc/content/
+
 ## Just a prototype?
 
 Yes, but it's stable and already used in production. 
