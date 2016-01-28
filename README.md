@@ -135,9 +135,18 @@ under renuoupload. A file contains the orginal name, the clean name with extensi
 the extension, the size and the publicUrl of the uploaded file. The params on your server when the form gets submitted 
 could look like that for an image called tiger_ultra_small_0.jpg:
 
-```
-"{renuoupload"=>{"tiger-ultra-small-0"=>{"orginalName"=>"tiger_ultra_small_0.jpg", "cleanName"=>"tiger-ultra-small-0.jpg",
- "extension"=>"jpg", "size"=>"22931", "publicUrl"=>"https://renuo-upload-develop.renuoapp.ch/undefinedtiger-ultra-small-0.jpg"}}"
+```json
+{  
+   "renuoupload":{  
+      "tiger-ultra-small-0":{  
+         "orginalName":"tiger_ultra_small_0.jpg",
+         "cleanName":"tiger-ultra-small-0.jpg",
+         "extension":"jpg",
+         "size":"22931",
+         "publicUrl":"https://renuo-upload-develop.renuoapp.ch/undefinedtiger-ultra-small-0.jpg"
+      }
+   }
+}
 ```
 
 ##### Custom 
