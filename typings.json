@@ -1,0 +1,6 @@
+{
+  "ambientDependencies": {
+    "dropzone": "registry:dt/dropzone#4.0.1+20160316155526",
+    "jquery": "registry:dt/jquery#1.10.0+20160316155526"
+  }
+}
