@@ -1,3 +1,6 @@
+/// <reference path="../typings/main/ambient/dropzone/index.d.ts" />
+/// <reference path="../typings/main/ambient/jquery/index.d.ts" />
+
 class RenuoUpload {
   private apiKey:string;
   private signingUrl:string;
@@ -90,31 +93,27 @@ class RenuoUpload {
   }
 
   private checkRequirements() {
-    if (this.isNotDefined(jQuery)) throw new Error('RenuoUpload needs jQuery.');
-    if (this.isNotDefined(Dropzone)) throw new Error('RenuoUpload needs Dropzone.');
+    if (!jQuery) throw new Error('RenuoUpload needs jQuery.');
+    if (!Dropzone) throw new Error('RenuoUpload needs Dropzone.');
   }
 
   private checkElement() {
-    if (this.isNotDefined(this.element)) throw new Error('Element is not defined');
-    if (this.isNotDefined(this.element[0].nodeType)) this.element = this.element[0];
-    if (this.isNotDefined(this.element.nodeType)) throw new Error('Element is not a valid element');
+    if (!this.element) throw new Error('Element is not defined');
+    if (!this.element[0].nodeType) this.element = this.element[0];
+    if (!this.element.nodeType) throw new Error('Element is not a valid element');
   }
 
   private adaptOptions() {
-    if (this.isNotDefined(this.dropzoneOptions)) throw new Error('DropzoneOptions is not defined');
-    if (this.isNotDefined(this.dropzoneOptions.acceptedFiles)) {
+    if (!this.dropzoneOptions) throw new Error('DropzoneOptions is not defined');
+    if (!this.dropzoneOptions.acceptedFiles) {
       throw new Error('DropzoneOptions.acceptedFiles is not defined');
     }
     if (typeof this.dropzoneOptions.acceptedFiles !== 'string') {
       throw new Error('DropzoneOptions.acceptedFiles is not a string');
     }
-    if (this.isNotDefined(this.dropzoneOptions.parallelUploads)) this.dropzoneOptions.parallelUploads = 25;
-    if (this.isNotDefined(this.dropzoneOptions.renameFilename)) this.dropzoneOptions.renameFilename = this.cleanFilename;
+    if (!this.dropzoneOptions.parallelUploads) this.dropzoneOptions.parallelUploads = 25;
+    if (!this.dropzoneOptions.renameFilename) this.dropzoneOptions.renameFilename = this.cleanFilename;
   }
-
-  private isNotDefined(variable:any) {
-    return typeof variable === 'undefined' || variable === null;
-  };
 
   private adaptCallback() {
     if (typeof this.callback !== 'function')
@@ -135,6 +134,6 @@ class RenuoUpload {
   }
 }
 
-(typeof module !== 'undefined' && module !== null) ? module.exports = RenuoUpload : window.RenuoUpload = RenuoUpload;
+window['RenuoUpload'] = RenuoUpload;
 
 

@@ -7,4 +7,3 @@ interface RenuoUploadResult {
   publicUrl:string;
   filePath:string;
 }
-
