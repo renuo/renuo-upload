@@ -90,33 +90,31 @@ class RenuoUpload {
   }
 
   private checkRequirements() {
-    if (typeof jQuery === 'undefined' || jQuery === null)
-      throw new Error('RenuoUpload needs jQuery.');
-    if (typeof Dropzone === 'undefined' || Dropzone === null)
-      throw new Error('RenuoUpload needs Dropzone.');
+    if (this.isNotDefined(jQuery)) throw new Error('RenuoUpload needs jQuery.');
+    if (this.isNotDefined(Dropzone)) throw new Error('RenuoUpload needs Dropzone.');
   }
 
   private checkElement() {
-    if (typeof this.element === 'undefined' || this.element === null)
-      throw new Error('Element is not defined');
-    if (typeof this.element[0].nodeType !== 'undefined' && typeof this.element[0].nodeType !== null)
-      this.element = this.element[0];
-    if (typeof this.element.nodeType === 'undefined' || this.element.nodeType === null)
-      throw new Error('Element is not a valid element');
+    if (this.isNotDefined(this.element)) throw new Error('Element is not defined');
+    if (this.isNotDefined(this.element[0].nodeType)) this.element = this.element[0];
+    if (this.isNotDefined(this.element.nodeType)) throw new Error('Element is not a valid element');
   }
 
   private adaptOptions() {
-    if (typeof this.dropzoneOptions === 'undefined' || this.dropzoneOptions === null)
-      throw new Error('DropzoneOptions is not defined');
-    if (typeof this.dropzoneOptions.acceptedFiles === 'undefined' || this.dropzoneOptions.acceptedFiles === null)
+    if (this.isNotDefined(this.dropzoneOptions)) throw new Error('DropzoneOptions is not defined');
+    if (this.isNotDefined(this.dropzoneOptions.acceptedFiles)) {
       throw new Error('DropzoneOptions.acceptedFiles is not defined');
-    if (typeof this.dropzoneOptions.acceptedFiles !== 'string')
+    }
+    if (typeof this.dropzoneOptions.acceptedFiles !== 'string') {
       throw new Error('DropzoneOptions.acceptedFiles is not a string');
-    if (typeof this.dropzoneOptions.parallelUploads === 'undefined' || this.dropzoneOptions.parallelUploads === null)
-      this.dropzoneOptions.parallelUploads = 25;
-    if (typeof this.dropzoneOptions.renameFilename === 'undefined' || this.dropzoneOptions.renameFilename === null)
-      this.dropzoneOptions.renameFilename = this.cleanFilename;
+    }
+    if (this.isNotDefined(this.dropzoneOptions.parallelUploads)) this.dropzoneOptions.parallelUploads = 25;
+    if (this.isNotDefined(this.dropzoneOptions.renameFilename)) this.dropzoneOptions.renameFilename = this.cleanFilename;
   }
+
+  private isNotDefined(variable:any) {
+    return typeof variable === 'undefined' || variable === null;
+  };
 
   private adaptCallback() {
     if (typeof this.callback !== 'function')
@@ -125,9 +123,9 @@ class RenuoUpload {
 
   private defaultCallback(result:RenuoUploadResult) {
     if (jQuery(this.element).parents('form').length) {
-      name = result.name
+      name = result.name;
       //TODO discuss with Lukas about upload of two times the same file
-      delete result.name
+      delete result.name;
       //TODO check if necessary, unexpected behavior, good point from Y
       jQuery.each(result, (k, v) => {
         const parentForm:JQuery = jQuery(this.element).parents('form');
@@ -136,9 +134,7 @@ class RenuoUpload {
     }
   }
 }
-if (typeof module !== 'undefined' && module !== null)
-  module.exports = RenuoUpload;
-else
-  window.RenuoUpload = RenuoUpload;
+
+(typeof module !== 'undefined' && module !== null) ? module.exports = RenuoUpload : window.RenuoUpload = RenuoUpload;
 
 
