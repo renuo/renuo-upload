@@ -121,12 +121,10 @@ class RenuoUpload {
   }
 
   private defaultCallback(result:RenuoUploadResult) {
+    // TODO discuss with Lukas about upload of two times the same file
     if (jQuery(this.element).parents('form').length) {
-      name = result.name;
-      //TODO discuss with Lukas about upload of two times the same file
-      delete result.name;
-      //TODO check if necessary, unexpected behavior, good point from Y
       jQuery.each(result, (k, v) => {
+        if(k == 'name') return true;
         const parentForm:JQuery = jQuery(this.element).parents('form');
         parentForm.append(`<input type='hidden' name='renuoupload[${name}][${k}]' value='${v}'>`);
       });
