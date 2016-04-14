@@ -32,14 +32,22 @@ class RenuoUpload {
 
     uploadDropzone.on('success', (file) => this.callback(this.buildResult(file)));
 
-    uploadDropzone.on('error', () => {
-      //todo inform sentry/new relic
+    uploadDropzone.on('error', (file:DropzoneFile, message:string|Error) => {
+      if (Raven) this.captureSentryError(message);
     });
   }
 
   private initializeOptions() {
     this.apiKey = jQuery(this.element).data('apikey');
     this.signingUrl = jQuery(this.element).data('signingurl');
+  }
+
+  private captureSentryError(message:string|Error):void {
+    if (message instanceof Error) {
+      Raven.captureException(<Error>message);
+    } else {
+      Raven.captureMessage(<string>message);
+    }
   }
 
   private cleanFilename(originalName:string):string {
