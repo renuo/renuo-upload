@@ -1,17 +1,27 @@
 /// <reference path="../typings/main/ambient/dropzone/index.d.ts" />
 /// <reference path="../typings/main/ambient/jquery/index.d.ts" />
+/// <reference path="../typings/main/ambient/ravenjs/index.d.ts" />
+/// <reference path="renuo_upload_result.d.ts"/>
+/// <reference path="renuo_signing_response.d.ts"/>
 
 class RenuoUpload {
   private apiKey:string;
   private signingUrl:string;
   private fileUrlPath:string;
   private filePrefix:string;
+  private element:HTMLElement;
 
-  constructor(private element:HTMLElement, private dropzoneOptions:DropzoneOptions, private callback:Function) {
+  constructor(elementOrElements:HTMLElement|HTMLElement[], private dropzoneOptions:DropzoneOptions, private callback:Function) {
+    this.element = this.convertElementOrElements(elementOrElements);
     this.checkRequirements();
     this.initializeOptions();
     this.checkAdaptParams();
     jQuery.when(this.getUploadInfoAndSignature()).done(this.initializeDropzone);
+  }
+
+  private convertElementOrElements(elementOrElements:HTMLElement|HTMLElement[]):HTMLElement {
+    if (!(<HTMLElement[]>elementOrElements)[0].nodeType) return (<HTMLElement[]>elementOrElements)[0];
+    return <HTMLElement>elementOrElements;
   }
 
   private initializeDropzone() {
@@ -57,15 +67,22 @@ class RenuoUpload {
       type: 'POST',
       url: this.signingUrl,
       data: {
-        api_key: this.apiKey,
+        api_key: this.apiKey
       },
       dataType: 'json'
-    }).done((responseJson) => {
+    }).done((responseJson:RenuoSigningResponse) => {
       this.dropzoneOptions.url = responseJson.url;
-      this.dropzoneOptions.params = {};
-      jQuery.each(responseJson.data, (k:string, v:string) => {
-        this.dropzoneOptions.params[k.replace(/_/g, '-')] = v;
-      });
+      this.dropzoneOptions.params = {
+        key: responseJson.data.key,
+        acl: responseJson.data.acl,
+        policy: responseJson.data.policy,
+        'x-amz-algorithm': responseJson.data.x_amz_algorithm,
+        'x-amz-credential': responseJson.data.x_amz_credential,
+        'x-amz-expires': responseJson.data.x_amz_expires,
+        'x-amz-signature': responseJson.data.x_amz_signature,
+        'x-amz-date': responseJson.data.x_amz_date,
+        utf8: responseJson.data.utf8
+      };
       this.filePrefix = responseJson.file_prefix;
       this.fileUrlPath = responseJson.file_url_path;
     }).fail(() => {
@@ -73,7 +90,7 @@ class RenuoUpload {
     });
   }
 
-  private buildResult(file):RenuoUploadResult {
+  private buildResult(file:DropzoneFile):RenuoUploadResult {
     const cleanFilename:string = this.cleanFilename(file.name);
     return {
       orginalName: file.name,
@@ -99,8 +116,8 @@ class RenuoUpload {
 
   private checkElement() {
     if (!this.element) throw new Error('Element is not defined');
-    if (!this.element[0].nodeType) this.element = this.element[0];
     if (!this.element.nodeType) throw new Error('Element is not a valid element');
+
   }
 
   private adaptOptions() {
@@ -123,8 +140,8 @@ class RenuoUpload {
   private defaultCallback(result:RenuoUploadResult) {
     // TODO discuss with Lukas about upload of two times the same file
     if (jQuery(this.element).parents('form').length) {
-      jQuery.each(result, (k, v) => {
-        if(k == 'name') return true;
+      jQuery.each(result, (k:string, v:string) => {
+        if (k === 'name') return true;
         const parentForm:JQuery = jQuery(this.element).parents('form');
         parentForm.append(`<input type='hidden' name='renuoupload[${name}][${k}]' value='${v}'>`);
       });
@@ -132,6 +149,13 @@ class RenuoUpload {
   }
 }
 
-window['RenuoUpload'] = RenuoUpload;
+interface Window {
+  RenuoUpload: typeof RenuoUpload;
+}
+declare var module:any;
 
-
+if (window) {
+  window.RenuoUpload = RenuoUpload;
+} else if (module) {
+  module.exports = RenuoUpload;
+}
