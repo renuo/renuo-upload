@@ -44,8 +44,8 @@ gulp.task('test-raw', function (done) {
 
 gulp.task('tslint', function () {
   return gulp.src(paths.srcTsFiles)
-      .pipe(tslint())
-      .pipe(tslint.report('prose'));
+    .pipe(tslint())
+    .pipe(tslint.report('prose'));
 });
 
 gulp.task('clean-all', function (callback) {
@@ -55,8 +55,8 @@ gulp.task('clean-all', function (callback) {
 
 gulp.task('copyhtml', ['clean-html'], function () {
   return gulp.src(paths.demoFiles)
-      .pipe(gulp.dest(paths.tmp))
-      .pipe(connect.reload());
+    .pipe(gulp.dest(paths.tmp))
+    .pipe(connect.reload());
 });
 
 gulp.task('clean-html', function (callback) {
@@ -81,12 +81,12 @@ gulp.task('tdd', ['copyhtml', 'tslint', 'tscompile', 'tscompile-specs'], functio
 
 gulp.task('ts-single-compile', ['clean-js-main'], function () {
   return gulp.src(paths.src + 'renuo_upload.ts')
-      .pipe(sourcemaps.init())
-      .pipe(ts(tsProject))
-      .pipe(babel({presets: ['es2015']}))
-      .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: 'src'}))
-      .pipe(gulp.dest(paths.tmp))
-      .pipe(connect.reload());
+    .pipe(sourcemaps.init())
+    .pipe(ts(tsProject))
+    .pipe(babel({presets: ['es2015']}))
+    .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: 'src'}))
+    .pipe(gulp.dest(paths.tmp))
+    .pipe(connect.reload());
 });
 
 gulp.task('clean-js-main', function (callback) {
@@ -95,12 +95,12 @@ gulp.task('clean-js-main', function (callback) {
 
 gulp.task('ts-specs-compile', ['clean-js-specs'], function () {
   return gulp.src(paths.srcSpecFiles)
-      .pipe(sourcemaps.init())
-      .pipe(ts(tsSpecsProject))
-      .pipe(babel({presets: ['es2015']}))
-      .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: 'src'}))
-      .pipe(gulp.dest(paths.tmp))
-      .pipe(connect.reload());
+    .pipe(sourcemaps.init())
+    .pipe(ts(tsSpecsProject))
+    .pipe(babel({presets: ['es2015']}))
+    .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: 'src'}))
+    .pipe(gulp.dest(paths.tmp))
+    .pipe(connect.reload());
 });
 
 gulp.task('clean-js-specs', function (callback) {
@@ -119,14 +119,14 @@ gulp.task('clean-js-dist', function (callback) {
 
 gulp.task('dist', ['ts-single-compile'], function (done) {
   return gulp.src('.tmp/renuo-upload.js')
-      .pipe(uglify({
-        wrap: true,
-        screwIE8: true
-      }))
-      .pipe(rename({
-        extname: '.min.js'
-      }))
-      .pipe(gulp.dest('dist'), done);
+    .pipe(uglify({
+      wrap: true,
+      screwIE8: true
+    }))
+    .pipe(rename({
+      extname: '.min.js'
+    }))
+    .pipe(gulp.dest('dist'), done);
 });
 
 gulp.task('tscompile', ['tslint', 'ts-single-compile']);

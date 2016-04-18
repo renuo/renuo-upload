@@ -10,31 +10,41 @@ class RenuoUpload {
   private fileUrlPath:string;
   private filePrefix:string;
   private element:HTMLElement;
+  private fileNumber:{[id:string]:number} = {};
+  private storedFileNumber:{[id:string]:number} = {};
+  private renameFilenameFunction:((name:string) => string);
+  private even = false;
 
   constructor(elementOrElements:HTMLElement|HTMLElement[], private dropzoneOptions:DropzoneOptions, private callback:Function) {
     this.element = this.convertElementOrElements(elementOrElements);
     this.checkRequirements();
     this.initializeOptions();
     this.checkAdaptParams();
-    jQuery.when(this.getUploadInfoAndSignature()).done(this.initializeDropzone);
+    this.renameFilenameFunction = this.renameFilenameOrDefaultFunction();
+    this.getUploadInfoAndSignature().done(() => this.initializeDropzone());
   }
 
   private convertElementOrElements(elementOrElements:HTMLElement|HTMLElement[]):HTMLElement {
-    if (!(<HTMLElement[]>elementOrElements)[0].nodeType) return (<HTMLElement[]>elementOrElements)[0];
+    if ((<HTMLElement[]>elementOrElements)[0].nodeType) return (<HTMLElement[]>elementOrElements)[0];
     return <HTMLElement>elementOrElements;
   }
 
   private initializeDropzone() {
-    Dropzone.autoDiscover = false;
-
     jQuery(this.element).addClass('dropzone');
     const uploadDropzone:Dropzone = new Dropzone(this.element, this.dropzoneOptions);
+
+    uploadDropzone.on('addedfile', (file) => {
+      const unindexedCleanFilename = this.renameFilenameFunction(file.name);
+      if (!this.fileNumber.hasOwnProperty(unindexedCleanFilename)) this.fileNumber[unindexedCleanFilename] = 0;
+      this.fileNumber[unindexedCleanFilename] += 1;
+    });
 
     uploadDropzone.on('success', (file) => this.callback(this.buildResult(file)));
 
     uploadDropzone.on('error', (file:DropzoneFile, message:string|Error) => {
-      if (Raven) this.captureSentryError(message);
+      this.captureSentryError(message);
     });
+    return true;
   }
 
   private initializeOptions() {
@@ -43,10 +53,12 @@ class RenuoUpload {
   }
 
   private captureSentryError(message:string|Error):void {
+    if (!window.Raven) return;
+
     if (message instanceof Error) {
-      Raven.captureException(<Error>message);
+      window.Raven.captureException(<Error>message);
     } else {
-      Raven.captureMessage(<string>message);
+      window.Raven.captureMessage(<string>message);
     }
   }
 
@@ -63,15 +75,15 @@ class RenuoUpload {
   }
 
   private getPublicUrl(cleanName:string):string {
-    return `${this.fileUrlPath}#{cleanName}`;
+    return `${this.fileUrlPath}${cleanName}`;
   }
 
   private getFilePath(cleanName:string):string {
-    return `${this.filePrefix}#{cleanName}`;
+    return `${this.filePrefix}${cleanName}`;
   }
 
-  private getUploadInfoAndSignature() {
-    jQuery.ajax({
+  private getUploadInfoAndSignature():JQueryPromise<any> {
+    return jQuery.ajax({
       type: 'POST',
       url: this.signingUrl,
       data: {
@@ -99,7 +111,12 @@ class RenuoUpload {
   }
 
   private buildResult(file:DropzoneFile):RenuoUploadResult {
-    const cleanFilename:string = this.cleanFilename(file.name);
+    const unindexedCleanFilename:string = this.renameFilenameFunction(file.name);
+    if (!this.storedFileNumber.hasOwnProperty(unindexedCleanFilename)) this.storedFileNumber[unindexedCleanFilename] = 0;
+    this.storedFileNumber[unindexedCleanFilename] += 1;
+    const cleanFilename:string = RenuoUpload.uniqueFilename(this.storedFileNumber[unindexedCleanFilename],
+      this.renameFilenameFunction, file.name);
+
     return {
       orginalName: file.name,
       cleanName: cleanFilename,
@@ -125,7 +142,6 @@ class RenuoUpload {
   private checkElement() {
     if (!this.element) throw new Error('Element is not defined');
     if (!this.element.nodeType) throw new Error('Element is not a valid element');
-
   }
 
   private adaptOptions() {
@@ -137,16 +153,33 @@ class RenuoUpload {
       throw new Error('DropzoneOptions.acceptedFiles is not a string');
     }
     if (!this.dropzoneOptions.parallelUploads) this.dropzoneOptions.parallelUploads = 25;
-    if (!this.dropzoneOptions.renameFilename) this.dropzoneOptions.renameFilename = this.cleanFilename;
+
+    this.dropzoneOptions.renameFilename = (name:string) => {
+      const unindexedCleanFilename = this.renameFilenameFunction(name);
+      this.even = !this.even;
+      let index:number = 0;
+      if (this.even) {
+        index = this.fileNumber[unindexedCleanFilename] ? this.fileNumber[unindexedCleanFilename] + 1 : 1;
+      } else {
+        index = this.fileNumber[unindexedCleanFilename];
+      }
+      return RenuoUpload.uniqueFilename(index, this.renameFilenameFunction, name);
+    };
+  }
+
+  private renameFilenameOrDefaultFunction():((name:string)=>string) {
+    return ((name) => this.cleanFilename(name));
+  }
+
+  private static uniqueFilename(fileNumber:number, renameFile:((name:string)=>string), name:string) {
+    return `${fileNumber}-${renameFile(name)}`;
   }
 
   private adaptCallback() {
-    if (typeof this.callback !== 'function')
-      this.callback = this.defaultCallback;
+    if (typeof this.callback !== 'function') this.callback = this.defaultCallback;
   }
 
   private defaultCallback(result:RenuoUploadResult) {
-    // TODO discuss with Lukas about upload of two times the same file
     if (jQuery(this.element).parents('form').length) {
       jQuery.each(result, (k:string, v:string) => {
         if (k === 'name') return true;
@@ -158,7 +191,8 @@ class RenuoUpload {
 }
 
 interface Window {
-  RenuoUpload: typeof RenuoUpload;
+  RenuoUpload:typeof RenuoUpload;
+  Raven:typeof Raven;
 }
 declare var module:any;
 
