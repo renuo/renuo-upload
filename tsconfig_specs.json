@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "noImplicitAny": true,
+    "sourceMap": false,
+    "outFile": "specs.js",
+    "inlineSourceMap": true
+  }
+}

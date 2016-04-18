@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+source ~/.zshrc
+
+# include as soon as TODOs are removed
+#grep --exclude-dir="typings/**" -i -r 'TODO' src README.md
+#if [ $? -eq 0 ]; then
+#  echo 'TODOs found. Please fix them and try again, commit aborted'
+#  exit 1
+#fi
+
+grep -i -r 'console.log' src
+if [ $? -eq 0 ]; then
+  echo 'console.log found. Please fix them and try again, commit aborted'
+  exit 1
+fi
+
+gulp test
+RC=$?
+if [ ! $RC -eq 0 ]; then
+  echo 'test issues detected, commit aborted!'
+  exit 1
+fi
