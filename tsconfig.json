@@ -3,6 +3,7 @@
     "target": "es6",
     "noImplicitAny": true,
     "sourceMap": false,
+    "declaration": true,
     "outFile": "renuo-upload.js",
     "inlineSourceMap": true
   }
