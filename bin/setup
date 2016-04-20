@@ -6,3 +6,4 @@ npm install
 
 grep '127.0.0.1 renuo-upload.dev' /etc/hosts || echo '127.0.0.1 renuo-upload.dev' | sudo tee -a /etc/hosts
 cat .git/hooks/pre-commit > /dev/null || ln -s ../../bin/check .git/hooks/pre-commit
+

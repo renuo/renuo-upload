@@ -1,8 +1,8 @@
 /// <reference path="../typings/main/ambient/dropzone/index.d.ts" />
 /// <reference path="../typings/main/ambient/jquery/index.d.ts" />
 /// <reference path="../typings/main/ambient/ravenjs/index.d.ts" />
-/// <reference path="renuo_upload_result.d.ts"/>
-/// <reference path="renuo_signing_response.d.ts"/>
+/// <reference path="renuo_upload_result.ts"/>
+/// <reference path="renuo_signing_response.ts"/>
 
 class RenuoUpload {
   private apiKey:string;
