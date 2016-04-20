@@ -30,7 +30,8 @@
                 Sie hier um die Datei hochzuladen.</span>
     </div>
   </div>
-</div>
+  <hr/>
+  <div class="result"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/jquery/2.2.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
@@ -48,10 +49,21 @@
       dictInvalidFileType: 'Hier können nur Bild-Dateien hochgeladen werden.',
       dictFileTooBig: 'Die Datei ist zu gross.'
     };
-    new window.RenuoUpload($('.renuo-upload'), dropzoneOptions, function (a, b, c) {
-      console.log(a);
-      console.log('---');
-    });
+    const logResult = function (result) {
+      const output = "<pre>" +
+        "Upload finished:" + "\n" +
+        "===================" + "\n" +
+        "filename orginal: " + result.orginalName + "\n" +
+        "filename clean: " + result.cleanName + "\n" +
+        "filename clean & short: " + result.name + "\n" +
+        "filename extension: " + result.extension + "\n" +
+        "filename size: " + result.size + "\n" +
+        "public url: " + result.publicUrl + "\n" +
+        "file path: " + result.filePath +
+        "</pre>";
+      $('.result').append(output);
+    };
+    new window.RenuoUpload($('.renuo-upload'), dropzoneOptions, logResult);
   });
 </script>
 </html>
