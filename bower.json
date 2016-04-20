@@ -7,10 +7,11 @@
   "private": false,
   "dependencies": {
     "jquery": "latest",
-    "dropzone": "git://github.com/cyrilkyburz/dropzone"
+    "dropzone": "^4.3.0"
   },
   "devDependencies": {
-    "renuo-upload": "https://github.com/renuo/renuo-upload"
+    "jasmine-core": "jasmine#^2.4.1",
+    "jasmine-ajax": "^3.2.0"
   },
   "keywords": [
     "upload",
