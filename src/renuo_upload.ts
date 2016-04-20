@@ -16,25 +16,24 @@ class RenuoUpload {
     this.checkRequirements();
     this.initializeOptions();
     this.checkAdaptParams();
-    jQuery.when(this.getUploadInfoAndSignature()).done(this.initializeDropzone);
+    this.getUploadInfoAndSignature().done(() => this.initializeDropzone());
   }
 
   private convertElementOrElements(elementOrElements:HTMLElement|HTMLElement[]):HTMLElement {
-    if (!(<HTMLElement[]>elementOrElements)[0].nodeType) return (<HTMLElement[]>elementOrElements)[0];
+    if ((<HTMLElement[]>elementOrElements)[0].nodeType) return (<HTMLElement[]>elementOrElements)[0];
     return <HTMLElement>elementOrElements;
   }
 
   private initializeDropzone() {
-    Dropzone.autoDiscover = false;
-
     jQuery(this.element).addClass('dropzone');
     const uploadDropzone:Dropzone = new Dropzone(this.element, this.dropzoneOptions);
 
     uploadDropzone.on('success', (file) => this.callback(this.buildResult(file)));
 
     uploadDropzone.on('error', (file:DropzoneFile, message:string|Error) => {
-      if (Raven) this.captureSentryError(message);
+      this.captureSentryError(message);
     });
+    return true;
   }
 
   private initializeOptions() {
@@ -43,10 +42,12 @@ class RenuoUpload {
   }
 
   private captureSentryError(message:string|Error):void {
+    if (!window.Raven) return;
+
     if (message instanceof Error) {
-      Raven.captureException(<Error>message);
+      window.Raven.captureException(<Error>message);
     } else {
-      Raven.captureMessage(<string>message);
+      window.Raven.captureMessage(<string>message);
     }
   }
 
@@ -63,15 +64,15 @@ class RenuoUpload {
   }
 
   private getPublicUrl(cleanName:string):string {
-    return `${this.fileUrlPath}#{cleanName}`;
+    return `${this.fileUrlPath}${cleanName}`;
   }
 
   private getFilePath(cleanName:string):string {
-    return `${this.filePrefix}#{cleanName}`;
+    return `${this.filePrefix}${cleanName}`;
   }
 
-  private getUploadInfoAndSignature() {
-    jQuery.ajax({
+  private getUploadInfoAndSignature():JQueryPromise<any> {
+    return jQuery.ajax({
       type: 'POST',
       url: this.signingUrl,
       data: {
@@ -125,7 +126,6 @@ class RenuoUpload {
   private checkElement() {
     if (!this.element) throw new Error('Element is not defined');
     if (!this.element.nodeType) throw new Error('Element is not a valid element');
-
   }
 
   private adaptOptions() {
@@ -158,7 +158,8 @@ class RenuoUpload {
 }
 
 interface Window {
-  RenuoUpload: typeof RenuoUpload;
+  RenuoUpload:typeof RenuoUpload;
+  Raven:typeof Raven;
 }
 declare var module:any;
 
