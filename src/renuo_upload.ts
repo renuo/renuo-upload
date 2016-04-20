@@ -146,7 +146,7 @@ class RenuoUpload {
   }
 
   private defaultCallback(result:RenuoUploadResult) {
-    // TODO discuss with Lukas about upload of two times the same file
+    // TODO fix the problem with duplicated image names
     if (jQuery(this.element).parents('form').length) {
       jQuery.each(result, (k:string, v:string) => {
         if (k === 'name') return true;
