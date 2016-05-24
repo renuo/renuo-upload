@@ -197,7 +197,7 @@ gulp
 ### Release
 
 ```sh
-gulp release
+gulp dist
 ```
 
 ### Tests
