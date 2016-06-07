@@ -13,7 +13,6 @@ bower_components
 .idea
 .sass-cache
 .DS_Store
-typings
 .tscache
 test
 .tmp

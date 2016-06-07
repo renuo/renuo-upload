@@ -1,4 +1,4 @@
-///<reference path="../typings/browser/ambient/jasmine/index.d.ts"/>
+///<reference path="../typings/globals/jasmine/index.d.ts"/>
 ///<reference path="renuo_upload.ts"/>
 
 describe('ContentBlockDrawer', function () {
