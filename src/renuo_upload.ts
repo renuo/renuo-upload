@@ -1,6 +1,6 @@
-/// <reference path="../typings/main/ambient/dropzone/index.d.ts" />
-/// <reference path="../typings/main/ambient/jquery/index.d.ts" />
-/// <reference path="../typings/main/ambient/ravenjs/index.d.ts" />
+/// <reference path="../typings/globals/dropzone/index.d.ts" />
+/// <reference path="../typings/globals/jquery/index.d.ts" />
+/// <reference path="../typings/globals/ravenjs/index.d.ts" />
 /// <reference path="renuo_upload_result.ts"/>
 /// <reference path="renuo_signing_response.ts"/>
 
