@@ -214,4 +214,4 @@ If problems should arise, either contact Cyril Kyburz or Lukas Elmer.
 
 ## MIT License
 
-Coypright 2017 [Renuo AG](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
+Copyright 2017 [Renuo AG](https://www.renuo.ch/). See [LICENSE](LICENSE) file.
